@@ -1,9 +1,7 @@
 use reqwest::blocking::RequestBuilder;
 
-pub fn get() -> RequestBuilder {
+pub fn get(url: &str) -> RequestBuilder {
     let client = reqwest::blocking::Client::new();
 
-    client
-        .get("http://localhost:18888/greeting")
-        .query(&[("name", "hello world")])
+    client.get(url).query(&[("name", "hello world")])
 }
