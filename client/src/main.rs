@@ -1,11 +1,15 @@
-use reqwest::Error;
+use std::{env, error::Error};
 
-fn main() -> Result<(), Error> {
-    let client = reqwest::blocking::Client::new();
-    let response = client
-        .get("http://localhost:18888/greeting")
-        .query(&[("name", "hello world")])
-        .send()?;
+mod client_builder;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let args: Vec<String> = env::args().collect();
+    let client = match args[1].as_str() {
+        "get" => Ok(client_builder::get()),
+        _ => Err("Invalid method"),
+    };
+    let response = client?.send()?;
+
     println!("status code: {}", response.status().as_u16());
     if let Some(message) = response.status().canonical_reason() {
         println!("status: {}", message);
