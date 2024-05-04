@@ -1,7 +1,9 @@
 extern crate axum;
 extern crate tokio;
 
-use axum::extract::Request;
+use std::collections::HashMap;
+
+use axum::extract::{Query, Request};
 use axum::response::Html;
 use axum::routing::get;
 use axum::Router;
@@ -16,7 +18,11 @@ async fn main() {
     axum::serve(listener, app).await.unwrap();
 }
 
-async fn greeting(request: Request) -> Html<&'static str> {
+async fn greeting(Query(params): Query<HashMap<String, String>>, request: Request) -> Html<String> {
     println!("{:#?}", request);
-    Html("<html><body>Hello, World!</body></html>")
+    let response = format!(
+        "<html><body>Hello, {}!</body></html>",
+        params.get("name").unwrap()
+    );
+    Html(response)
 }
