@@ -1,3 +1,6 @@
+extern crate axum;
+extern crate tokio;
+
 use axum::extract::Request;
 use axum::response::Html;
 use axum::routing::get;
