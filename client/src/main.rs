@@ -6,6 +6,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let args: Vec<String> = env::args().collect();
     let client = match args[1].as_str() {
         "get" => Ok(client_builder::get()),
+        "head" => Ok(client_builder::head()),
         _ => Err("Invalid method"),
     };
     let response = client?.send()?;
